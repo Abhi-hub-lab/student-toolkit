@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>GPA / CGPA Calculator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f3f8ff;
+      padding: 40px;
+      text-align: center;
+    }
+    h2 {
+      color: #333;
+    }
+    input, button {
+      padding: 10px;
+      margin: 5px;
+      width: 200px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    button {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    #subjects {
+      margin-bottom: 20px;
+    }
+    .subject-row {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin: 10px 0;
+    }
+    .result {
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: green;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>GPA / CGPA Calculator</h2>
+  <div id="subjects">
+    <div class="subject-row">
+      <input type="number" class="grade" placeholder="Grade (e.g. 9)" min="0" max="10" />
+      <input type="number" class="credit" placeholder="Credits (e.g. 3)" min="0" />
+    </div>
+  </div>
+
+  <button onclick="addRow()">➕ Add Subject</button>
+  <button onclick="calculateGPA()">🎓 Calculate GPA</button>
+
+  <p class="result" id="gpaResult"></p>
+
+  <script>
+    function addRow() {
+      const container = document.getElementById("subjects");
+      const row = document.createElement("div");
+      row.className = "subject-row";
+      row.innerHTML = `
+        <input type="number" class="grade" placeholder="Grade (e.g. 8.5)" min="0" max="10" />
+        <input type="number" class="credit" placeholder="Credits (e.g. 4)" min="0" />
+      `;
+      container.appendChild(row);
+    }
+
+    function calculateGPA() {
+      const grades = document.querySelectorAll(".grade");
+      const credits = document.querySelectorAll(".credit");
+
+      let totalCredits = 0;
+      let totalPoints = 0;
+
+      for (let i = 0; i < grades.length; i++) {
+        const grade = parseFloat(grades[i].value);
+        const credit = parseFloat(credits[i].value);
+
+        if (!isNaN(grade) && !isNaN(credit)) {
+          totalPoints += grade * credit;
+          totalCredits += credit;
+        }
+      }
+
+      if (totalCredits === 0) {
+        document.getElementById("gpaResult").innerText = "Please enter valid grades and credits.";
+        return;
+      }
+
+      const gpa = (totalPoints / totalCredits).toFixed(2);
+      document.getElementById("gpaResult").innerText = "Your GPA / CGPA is: " + gpa;
+    }
+  </script>
+
+</body>
+</html>
